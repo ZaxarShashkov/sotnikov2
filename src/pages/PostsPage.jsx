@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { fetchPosts, fetchUsers } from '../store/reducers/ActionCreators';
+import { fetchPosts, fetchUsers, fetchComments } from '../store/reducers/ActionCreators';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Container } from 'react-bootstrap';
@@ -12,13 +12,17 @@ const PostsPage = () => {
 
 	const { posts, isLoading, error } = useAppSelector((state) => state.postReducer);
 	const { users } = useAppSelector((state) => state.userReducer);
+	const { comments } = useAppSelector((state) => state.commentsReducer);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		dispatch(fetchPosts());
 		dispatch(fetchUsers());
+		dispatch(fetchComments());
 		setLimit(Number(localStorage.getItem('limit')));
 	}, []);
+
+	console.log(comments)
 
 	const handleClick = (e) => {
 		const value = e.target.value;
@@ -29,7 +33,7 @@ const PostsPage = () => {
 
 	return (
 		<Container>
-			<InputGroup className='mb-3 mt-3' style={{ justifyContent: 'center' }}>
+			<InputGroup className='mt-3' style={{ justifyContent: 'center' }}>
 				<Button variant='outline-secondary' value={10} onClick={(e) => handleClick(e)}>
 					10
 				</Button>
@@ -46,23 +50,33 @@ const PostsPage = () => {
 					All
 				</Button>
 			</InputGroup>
-			{posts.slice(0, limit).map((item) => {
-				return (
-					<CardGroup key={item.id}>
-						<Card
-							border='dark'
-							style={{ width: '18rem', marginTop: '1rem' }}
-							key={item.id}>
-							<Card.Header>{item.id}: </Card.Header>
-							<Card.Body>
-								<Card.Title>{item.title}</Card.Title>
-								<Card.Text>{item.body}</Card.Text>
-								<Button variant='primary'>Go somewhere</Button>
-							</Card.Body>
-						</Card>
-					</CardGroup>
-				);
-			})}
+			<CardGroup >
+				<>
+					{users.map((user) => {
+						const userPosts = posts.slice(0, limit).filter((post) => post.userId === user.id);
+						return (
+							<div key={user.id}>
+								<Card.Title className='mb-3 mt-3'>Username: {user.name}</Card.Title>
+								{userPosts.map((post) => (
+									<Card key={post.id}>
+										<Card.Body>
+											<Card.Title> {post.title}</Card.Title>
+											<Card.Text>Text: {post.body}</Card.Text>
+											<div style={{ display: 'flex', gap: '1rem' }}>
+												<Button variant="secondary">Comments</Button>
+												<Button variant="secondary">Edit</Button>
+												<Button variant="secondary">Remove</Button>
+											</div>
+
+										</Card.Body>
+									</Card>
+								))}
+							</div>
+						);
+					})}
+				</>
+
+			</CardGroup>
 		</Container>
 	);
 };
