@@ -8,10 +8,12 @@ import CardGroup from 'react-bootstrap/CardGroup';
 import Accordion from 'react-bootstrap/Accordion';
 import ButtonGroup from '../components/ButtonGroup/ButtonGroup';
 import CustomToggle from '../components/CustomToggle/CustomToggle';
+import Modal from '../components/Modal/Modal';
 
 const PostsPage = () => {
 	const [limit, setLimit] = useState(100);
 	const [comment, setComment] = useState(0)
+	const [postsLocal, setPostsLocal] = useState([])
 
 	const { posts, isLoading, error } = useAppSelector((state) => state.postReducer);
 	const { users } = useAppSelector((state) => state.userReducer);
@@ -25,9 +27,14 @@ const PostsPage = () => {
 	}, []);
 
 	useEffect(() => {
+		if (!isLoading) {
+			setPostsLocal(posts)
+		}
+	}, [isLoading])
+
+	useEffect(() => {
 		dispatch(fetchComments(comment));
 	}, [comment])
-
 
 	const handleClick = (e) => {
 		const value = e.target.value;
@@ -35,15 +42,18 @@ const PostsPage = () => {
 		localStorage.setItem('limit', value);
 	};
 
-
+	const onRemove = (e) => {
+		setPostsLocal(postsLocal.filter((post) => post.id !== +e.currentTarget.dataset.id))
+	}
 
 	return (
 		<Container>
 			<ButtonGroup handleClick={handleClick} />
 			<CardGroup >
+
 				<>
 					{users.slice(0, limit / 10).map((user) => {
-						const userPosts = posts.slice(0, limit).filter((post) => post.userId === user.id);
+						const userPosts = postsLocal.slice(0, limit).filter((post) => post.userId === user.id);
 						return (
 							<div key={user.id}>
 								<Card.Title className='mb-3 mt-3'>Username: {user.name}</Card.Title>
@@ -58,7 +68,8 @@ const PostsPage = () => {
 													<div style={{ display: 'flex', gap: '1rem' }}>
 														<CustomToggle eventKey={post.id} id={post.id} setComment={setComment}>Comments</CustomToggle>
 														<Button variant="secondary">Edit</Button>
-														<Button variant="secondary">Remove</Button>
+														<Modal id={post.id} onRemove={onRemove}></Modal>
+														{/* <Button variant="secondary" data-id={post.id} onClick={(e) => onRemove(e)}>Remove</Button> */}
 													</div>
 												</Card.Body>
 												{postComments.map((comment) => (
