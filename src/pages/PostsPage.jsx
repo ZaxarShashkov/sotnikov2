@@ -9,18 +9,24 @@ import Accordion from 'react-bootstrap/Accordion';
 import ButtonGroup from '../components/ButtonGroup/ButtonGroup';
 import CustomToggle from '../components/CustomToggle/CustomToggle';
 import Modal from '../components/Modal/Modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import Form from 'react-bootstrap/Form';
+
+
+
 
 const PostsPage = () => {
 	const [limit, setLimit] = useState(100);
 	const [comment, setComment] = useState(0)
 	const [postsLocal, setPostsLocal] = useState([])
 	const [contentEditable, setContentEditable] = useState(false)
-	const [elected, setElected] = useState(false)
 
 	const { posts, isLoading, error } = useAppSelector((state) => state.postReducer);
 	const { users } = useAppSelector((state) => state.userReducer);
 	const { comments } = useAppSelector((state) => state.commentsReducer);
 	const dispatch = useAppDispatch();
+
 
 	useEffect(() => {
 		dispatch(fetchPosts());
@@ -52,6 +58,8 @@ const PostsPage = () => {
 		setContentEditable(contentEditable => !contentEditable)
 	}
 
+
+
 	return (
 		<Container>
 			<ButtonGroup handleClick={handleClick} />
@@ -74,6 +82,11 @@ const PostsPage = () => {
 														<CustomToggle eventKey={post.id} id={post.id} setComment={setComment}>Comments</CustomToggle>
 														<Button variant="secondary" onClick={editable}>Edit</Button>
 														<Modal id={post.id} onRemove={onRemove}></Modal>
+														<Button variant="secondary" >
+															<FontAwesomeIcon icon={faStar} style={{ color: "#ffd500", }} />
+															<FontAwesomeIcon icon={faStar} style={{ color: "#ffffff", }} />
+														</Button>
+														<Form.Check aria-label="option 1" className='mt-2' />
 													</div>
 												</Card.Body>
 												{postComments.map((comment) => (
