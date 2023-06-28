@@ -19,11 +19,9 @@ export const fetchUsers = createAsyncThunk('user/fetchAll', async (_, thunkApi) 
 	}
 });
 
-export const fetchComments = createAsyncThunk('comments/fetchAll', async (_, thunkApi) => {
-	try {
-		const responseComments = await axios.get('https://jsonplaceholder.typicode.com/comments');
-		return responseComments.data;
-	} catch (e) {
-		return thunkApi.rejectWithValue('error');
-	}
+export const fetchComments = createAsyncThunk('comments/fetchAll', async (id) => {
+	const responseComments = await axios.get(
+		`https://jsonplaceholder.typicode.com/comments?postId=${id}`
+	);
+	return responseComments.data;
 });

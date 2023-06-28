@@ -11,6 +11,7 @@ import CustomToggle from '../components/CustomToggle/CustomToggle';
 
 const PostsPage = () => {
 	const [limit, setLimit] = useState(100);
+	const [comment, setComment] = useState(0)
 
 	const { posts, isLoading, error } = useAppSelector((state) => state.postReducer);
 	const { users } = useAppSelector((state) => state.userReducer);
@@ -20,17 +21,20 @@ const PostsPage = () => {
 	useEffect(() => {
 		dispatch(fetchPosts());
 		dispatch(fetchUsers());
-		dispatch(fetchComments());
 		setLimit(Number(localStorage.getItem('limit')));
 	}, []);
 
-	console.log(comments)
+	useEffect(() => {
+		dispatch(fetchComments(comment));
+	}, [comment])
+
 
 	const handleClick = (e) => {
 		const value = e.target.value;
 		setLimit(value);
 		localStorage.setItem('limit', value);
 	};
+
 
 
 	return (
@@ -43,24 +47,30 @@ const PostsPage = () => {
 						return (
 							<div key={user.id}>
 								<Card.Title className='mb-3 mt-3'>Username: {user.name}</Card.Title>
-								{userPosts.map((post) => (
-									<Accordion defaultActiveKey="0" key={post.id}>
-										<Card key={post.id} className='mt-3'>
-											<Card.Body>
-												<Card.Title>{post.id}. {post.title}</Card.Title>
-												<Card.Text>Text: {post.body}</Card.Text>
-												<div style={{ display: 'flex', gap: '1rem' }}>
-													<CustomToggle eventKey={post.id} postId={post.id}>Comments</CustomToggle>
-													<Button variant="secondary">Edit</Button>
-													<Button variant="secondary">Remove</Button>
-												</div>
-											</Card.Body>
-											<Accordion.Collapse eventKey={post.id}>
-												<Card.Body>asdas</Card.Body>
-											</Accordion.Collapse>
-										</Card>
-									</Accordion>
-								))}
+								{userPosts.map((post) => {
+									const postComments = comments.filter((comment) => comment.postId === post.id)
+									return (
+										<Accordion defaultActiveKey="0" key={post.id}>
+											<Card key={post.id} className='mt-3'>
+												<Card.Body>
+													<Card.Title>{post.id}. {post.title}</Card.Title>
+													<Card.Text>Text: {post.body}</Card.Text>
+													<div style={{ display: 'flex', gap: '1rem' }}>
+														<CustomToggle eventKey={post.id} id={post.id} setComment={setComment}>Comments</CustomToggle>
+														<Button variant="secondary">Edit</Button>
+														<Button variant="secondary">Remove</Button>
+													</div>
+												</Card.Body>
+												{postComments.map((comment) => (
+													<Accordion.Collapse eventKey={post.id} key={comment.id}>
+														<Card.Body>{comment.name}</Card.Body>
+													</Accordion.Collapse>
+												))}
+											</Card>
+										</Accordion>
+									)
+
+								})}
 							</div>
 						);
 					})}
