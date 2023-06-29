@@ -15,6 +15,7 @@ import NumberOfPages from '../components/NumberOfPages/NumberOfPages';
 import Spinner from 'react-bootstrap/Spinner';
 import Icon from '../components/Icon/Icon';
 import MyCard from '../components/MyCard/MyCard';
+import MyDropDown from '../components/MyDropDown/MyDropDown';
 
 const PostsPage = () => {
 	const [limit, setLimit] = useState(100);
@@ -32,7 +33,6 @@ const PostsPage = () => {
 	const { users } = useAppSelector((state) => state.userReducer);
 
 	const dispatch = useAppDispatch();
-
 
 	useEffect(() => {
 		dispatch(fetchPosts());
@@ -55,7 +55,6 @@ const PostsPage = () => {
 		localStorage.setItem('filter', value);
 	};
 
-
 	useEffect(() => {
 		const value = posts.length / Number(limit)
 		setPages(value)
@@ -77,6 +76,11 @@ const PostsPage = () => {
 			return null
 		}
 	}
+
+	const sortByIdDown = () => {
+		setPostsLocal([...postsLocal].sort((a, b) => b.id - a.id))
+	}
+
 
 
 	const renderContent = () => {
@@ -120,6 +124,7 @@ const PostsPage = () => {
 			<h2 style={{ textAlign: 'center' }}>Number of posts</h2>
 			<ButtonGroup handleClick={handleClick} />
 			<NumberOfPages postsLocal={postsLocal} limit={limit} pages={pages} setPages={setPages} countPosts={countPosts} setCountPosts={setCountPosts} setLimit={setLimit} handleClickLimit={handleClickLimit} />
+			<MyDropDown className='mt-3' sortByIdDown={sortByIdDown}></MyDropDown>
 			<CardGroup >
 				{isLoadingComments || isLoading ? <Spinner animation="border" role="status" style={{ position: 'fixed', top: '50%', left: '50%' }}>
 					<span className="visually-hidden">Loading...</span>

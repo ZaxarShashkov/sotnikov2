@@ -59,18 +59,6 @@ const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, se
     }
 
 
-    // const removeGroup = () => {
-    // 	const filter = postsLocal.filter((post) =>
-    // 		id.every((id) => post.id !== +id))
-    // 	if (remove) {
-    // 		setRemove(false)
-    // 		return setPostsLocal(filter)
-    // 	} else {
-    // 		return null
-    // 	}
-    // }
-
-
     return (
         <Card key={postId} className='mt-3' style={elected ? { background: 'grey' } : { background: 'transparent' }}>
             <Card.Body>
