@@ -1,7 +1,7 @@
 import React from 'react'
 import Dropdown from 'react-bootstrap/Dropdown';
 
-const MyDropDown = ({ sortByIdDown }) => {
+const MyDropDown = ({ sortByIdDown, sortByIdUp, postsLocal }) => {
 
 
     return (
@@ -11,8 +11,8 @@ const MyDropDown = ({ sortByIdDown }) => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-                <Dropdown.Item onClick={sortByIdDown} href="#">By name up</Dropdown.Item>
-                <Dropdown.Item onClick={() => console.log('asdsa')} href="#">By name down</Dropdown.Item>
+                <Dropdown.Item onClick={() => sortByIdDown(postsLocal)} href="#">By id down</Dropdown.Item>
+                <Dropdown.Item onClick={() => sortByIdUp(postsLocal)} href="#">By id up</Dropdown.Item>
                 <Dropdown.Item href="#">Descending</Dropdown.Item>
                 <Dropdown.Item href="#">Ascending else</Dropdown.Item>
             </Dropdown.Menu>

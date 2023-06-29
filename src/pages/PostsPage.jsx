@@ -21,6 +21,7 @@ const PostsPage = () => {
 	const [limit, setLimit] = useState(100);
 
 	const [postsLocal, setPostsLocal] = useState([])
+	const [usersLocal, setUsersLocal] = useState([])
 	const [contentEditable, setContentEditable] = useState(false)
 	const [pages, setPages] = useState(1)
 	const [countPosts, setCountPosts] = useState(0)
@@ -44,8 +45,10 @@ const PostsPage = () => {
 	useEffect(() => {
 		if (!isLoading) {
 			setPostsLocal(posts)
+			setUsersLocal(users)
 		}
 	}, [isLoading])
+
 
 	const handleClick = (e) => {
 		const value = e.target.value;
@@ -77,46 +80,15 @@ const PostsPage = () => {
 		}
 	}
 
-	const sortByIdDown = () => {
+	const sortByIdDown = (postsLocal) => {
+		setUsersLocal([...usersLocal].sort((a, b) => b.id - a.id))
 		setPostsLocal([...postsLocal].sort((a, b) => b.id - a.id))
 	}
 
-
-
-	const renderContent = () => {
-		const content = postsLocal ? users.slice(Number(countPosts) / 10, Number(filter) / 10).map((user) => {
-			const userPosts = postsLocal.slice(Number(countPosts), Number(filter)).filter((post) => post.userId === user.id);
-			return (
-				<div key={user.id}>
-					<Card.Title className='mb-3 mt-3'><span contentEditable={contentEditable}>Username: {user.name}</span></Card.Title>
-					{userPosts.map((post) => {
-						const postComments = comments.filter((comment) => comment.postId === post.id)
-						return (
-							<Accordion defaultActiveKey="0" key={post.id}>
-								<MyCard postId={post.id}
-									userPosts={userPosts}
-									postTitle={post.title}
-									postComments={postComments}
-									postBody={post.body}
-									setContentEditable={setContentEditable}
-									contentEditable={contentEditable}
-									postsLocal={postsLocal}
-									setPostsLocal={setPostsLocal}
-									id={id}
-									setId={setId}
-									removeGroup={removeGroup}
-									setRemove={setRemove} />
-							</Accordion>
-						)
-
-					})}
-				</div>
-			);
-		}) : null;
-		return <>{content}</>
+	const sortByIdUp = (postsLocal) => {
+		setUsersLocal([...usersLocal].sort((a, b) => a.id - b.id))
+		setPostsLocal([...postsLocal].sort((a, b) => a.id - b.id))
 	}
-
-	const content = renderContent()
 
 
 	return (
@@ -124,13 +96,41 @@ const PostsPage = () => {
 			<h2 style={{ textAlign: 'center' }}>Number of posts</h2>
 			<ButtonGroup handleClick={handleClick} />
 			<NumberOfPages postsLocal={postsLocal} limit={limit} pages={pages} setPages={setPages} countPosts={countPosts} setCountPosts={setCountPosts} setLimit={setLimit} handleClickLimit={handleClickLimit} />
-			<MyDropDown className='mt-3' sortByIdDown={sortByIdDown}></MyDropDown>
+			<MyDropDown className='mt-3' sortByIdDown={sortByIdDown} sortByIdUp={sortByIdUp} postsLocal={postsLocal}></MyDropDown>
 			<CardGroup >
 				{isLoadingComments || isLoading ? <Spinner animation="border" role="status" style={{ position: 'fixed', top: '50%', left: '50%' }}>
 					<span className="visually-hidden">Loading...</span>
 				</Spinner> : null}
 				<>
-					{content}
+					{postsLocal ? usersLocal.slice(Number(countPosts) / 10, Number(filter) / 10).map((user) => {
+						const userPosts = postsLocal.slice(Number(countPosts), Number(filter)).filter((post) => post.userId === user.id);
+						return (
+							<div key={user.id}>
+								<Card.Title className='mb-3 mt-3'><span contentEditable={contentEditable}>Username: {user.name}</span></Card.Title>
+								{userPosts.map((post) => {
+									const postComments = comments.filter((comment) => comment.postId === post.id)
+									return (
+										<Accordion defaultActiveKey="0" key={post.id}>
+											<MyCard postId={post.id}
+												userPosts={userPosts}
+												postTitle={post.title}
+												postComments={postComments}
+												postBody={post.body}
+												setContentEditable={setContentEditable}
+												contentEditable={contentEditable}
+												postsLocal={postsLocal}
+												setPostsLocal={setPostsLocal}
+												id={id}
+												setId={setId}
+												removeGroup={removeGroup}
+												setRemove={setRemove} />
+										</Accordion>
+									)
+
+								})}
+							</div>
+						);
+					}) : null}
 
 				</>
 

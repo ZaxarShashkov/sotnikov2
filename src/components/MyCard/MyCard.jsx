@@ -7,7 +7,7 @@ import Icon from '../../components/Icon/Icon';
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { fetchPosts, fetchUsers, fetchComments } from '../../store/reducers/ActionCreators';
+import {  fetchComments } from '../../store/reducers/ActionCreators';
 import CustomModal from '../Modal/CustomModal';
 
 const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, setContentEditable, setPostsLocal, postsLocal, setRemove, removeGroup, id, setId }) => {
