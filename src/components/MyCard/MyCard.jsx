@@ -54,7 +54,21 @@ const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, se
         const value = e.currentTarget.dataset.id
         e.currentTarget.dataset.elected = selected
         localStorage.getItem(value) !== null ? localStorage.removeItem(value) : localStorage.setItem(value, selected);
+        setIsVisible(false)
+        setChecked(false)
     }
+
+
+    // const removeGroup = () => {
+    // 	const filter = postsLocal.filter((post) =>
+    // 		id.every((id) => post.id !== +id))
+    // 	if (remove) {
+    // 		setRemove(false)
+    // 		return setPostsLocal(filter)
+    // 	} else {
+    // 		return null
+    // 	}
+    // }
 
 
     return (
@@ -67,11 +81,11 @@ const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, se
                     <Button variant="secondary" onClick={editable}>Edit</Button>
                     <Modal id={postId} onRemove={onRemove}></Modal>
                     <Icon postId={postId} elected={elected} setElected={setElected} setSelected={setSelected} selected={selected} onElected={onElected} />
-                    <Form.Check data-id={postId} aria-label="option 1" className='mt-2' onClick={onChecked} />
+                    <Form.Check data-id={postId} data-elected={selected} aria-label="option 1" className='mt-2' onClick={onChecked} />
                     {checked ? <><Button variant="secondary" setRemove={setRemove} data-id={postId} onClick={onVisibleRemove}>Remove</Button>
                         <Button variant="secondary" data-id={postId} onClick={onVisible}>Select</Button>
                     </> : null}
-                    {isVisible ? <CustomModal removeGroup={removeGroup} onVisible={onVisible}></CustomModal> : null}
+                    {isVisible ? <CustomModal removeGroup={removeGroup} onVisible={onVisible} onElected={onElected}></CustomModal> : null}
                 </div>
             </Card.Body>
             {postComments.map((comment) => (
