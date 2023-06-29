@@ -13,7 +13,7 @@ const CustomToggle = ({ children, eventKey, id, setComment }) => {
     return (
         <Button
             type="button"
-            variant='outline-secondary'
+            variant="secondary"
             onClick={decoratedOnClick}
             data-id={id}
         >
