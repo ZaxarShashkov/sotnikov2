@@ -45,8 +45,6 @@ const PostsPage = () => {
 		}
 	}, [isLoading])
 
-
-
 	const handleClick = (e) => {
 		const value = e.target.value;
 		setLimit(value);
@@ -78,6 +76,7 @@ const PostsPage = () => {
 						return (
 							<Accordion defaultActiveKey="0" key={post.id}>
 								<MyCard postId={post.id}
+									userPosts={userPosts}
 									postTitle={post.title}
 									postComments={postComments}
 									postBody={post.body}

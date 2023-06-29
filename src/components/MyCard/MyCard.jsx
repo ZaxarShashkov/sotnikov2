@@ -9,7 +9,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchPosts, fetchUsers, fetchComments } from '../../store/reducers/ActionCreators';
 
-const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, setContentEditable, setPostsLocal, postsLocal }) => {
+const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, setContentEditable, setPostsLocal, postsLocal, userPosts }) => {
 
     const [comment, setComment] = useState(0)
     const { comments, isLoadingComments } = useAppSelector((state) => state.commentsReducer);
@@ -35,7 +35,7 @@ const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, se
                     <CustomToggle eventKey={postId} id={postId} setComment={setComment}>Comments</CustomToggle>
                     <Button variant="secondary" onClick={editable}>Edit</Button>
                     <Modal id={postId} onRemove={onRemove}></Modal>
-                    <Icon />
+                    <Icon postId={postId} />
                     <Form.Check aria-label="option 1" className='mt-2' />
                 </div>
             </Card.Body>
