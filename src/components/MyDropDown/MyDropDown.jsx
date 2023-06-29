@@ -5,7 +5,7 @@ const MyDropDown = ({ sortByIdDown, sortByIdUp, sortByUserNameDown, sortByUserNa
 
 
     return (
-        <Dropdown>
+        <Dropdown className='mt-3'>
             <Dropdown.Toggle variant="secondary" id="dropdown-basic">
                 Post sorting
             </Dropdown.Toggle>

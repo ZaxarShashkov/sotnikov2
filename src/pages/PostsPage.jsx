@@ -16,6 +16,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Icon from '../components/Icon/Icon';
 import MyCard from '../components/MyCard/MyCard';
 import MyDropDown from '../components/MyDropDown/MyDropDown';
+import NewUserForm from '../components/NewUserForm/NewUserForm';
 
 const PostsPage = () => {
 	const [limit, setLimit] = useState(100);
@@ -41,6 +42,8 @@ const PostsPage = () => {
 		setLimit(Number(localStorage.getItem('limit')));
 		setFilter(Number(localStorage.getItem('filter')))
 	}, []);
+
+
 
 	useEffect(() => {
 		if (!isLoading) {
@@ -105,6 +108,7 @@ const PostsPage = () => {
 			<ButtonGroup handleClick={handleClick} />
 			<NumberOfPages postsLocal={postsLocal} limit={limit} pages={pages} setPages={setPages} countPosts={countPosts} setCountPosts={setCountPosts} setLimit={setLimit} handleClickLimit={handleClickLimit} />
 			<MyDropDown className='mt-3' sortByIdDown={sortByIdDown} sortByIdUp={sortByIdUp} postsLocal={postsLocal} sortByUserNameDown={sortByUserNameDown} sortByUserNameUp={sortByUserNameUp}></MyDropDown>
+			<NewUserForm usersLocal={usersLocal} setUsersLocal={setUsersLocal} postsLocal={postsLocal} setPostsLocal={setPostsLocal} />
 			<CardGroup >
 				{isLoadingComments || isLoading ? <Spinner animation="border" role="status" style={{ position: 'fixed', top: '50%', left: '50%' }}>
 					<span className="visually-hidden">Loading...</span>
