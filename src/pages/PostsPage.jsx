@@ -24,6 +24,15 @@ const PostsPage = () => {
 	const [pages, setPages] = useState(1)
 	const [countPosts, setCountPosts] = useState(0)
 	const [filter, setFilter] = useState(null)
+	const [id, setId] = useState([])
+
+
+	const removeGroup = () => {
+		const filter = postsLocal.filter((post) =>
+			id.every((id) => post.id !== +id))
+		return setPostsLocal(filter)
+	}
+
 
 	const { comments, isLoadingComments } = useAppSelector((state) => state.commentsReducer);
 	const { posts, isLoading, error } = useAppSelector((state) => state.postReducer);
@@ -83,7 +92,10 @@ const PostsPage = () => {
 									setContentEditable={setContentEditable}
 									contentEditable={contentEditable}
 									postsLocal={postsLocal}
-									setPostsLocal={setPostsLocal} />
+									setPostsLocal={setPostsLocal}
+									id={id}
+									setId={setId}
+									removeGroup={removeGroup} />
 							</Accordion>
 						)
 

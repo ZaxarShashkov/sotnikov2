@@ -8,8 +8,12 @@ import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchPosts, fetchUsers, fetchComments } from '../../store/reducers/ActionCreators';
+import CustomModal from '../Modal/CustomModal';
 
-const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, setContentEditable, setPostsLocal, postsLocal, userPosts }) => {
+const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, setContentEditable, setPostsLocal, postsLocal, checkDataId, removeGroup, id, setId }) => {
+
+    const [checked, setChecked] = useState(false)
+    const [isVisible, setIsVisible] = useState(false)
 
     const [comment, setComment] = useState(0)
     const { comments, isLoadingComments } = useAppSelector((state) => state.commentsReducer);
@@ -26,6 +30,17 @@ const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, se
     const onRemove = (e) => {
         setPostsLocal(postsLocal.filter((post) => post.id !== +e.currentTarget.dataset.id))
     }
+
+    const onChecked = (e) => {
+        setChecked(checked => !checked)
+        setId([...id, e.currentTarget.dataset.id])
+    }
+
+    const onVisible = () => {
+        setIsVisible(isVisible => !isVisible)
+    }
+
+
     return (
         <Card key={postId} className='mt-3' style={{ background: 'grey' }}>
             <Card.Body>
@@ -36,7 +51,11 @@ const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, se
                     <Button variant="secondary" onClick={editable}>Edit</Button>
                     <Modal id={postId} onRemove={onRemove}></Modal>
                     <Icon postId={postId} />
-                    <Form.Check aria-label="option 1" className='mt-2' />
+                    <Form.Check data-id={postId} aria-label="option 1" className='mt-2' onClick={onChecked} />
+                    {checked ? <><Button variant="secondary" data-id={postId} onClick={onVisible}>Remove</Button>
+                        <Button variant="secondary" data-id={postId} onClick={(e) => { onVisible(); checkDataId(e) }}>Select</Button>
+                    </> : null}
+                    {isVisible ? <CustomModal removeGroup={removeGroup} onVisible={onVisible}></CustomModal> : null}
                 </div>
             </Card.Body>
             {postComments.map((comment) => (
