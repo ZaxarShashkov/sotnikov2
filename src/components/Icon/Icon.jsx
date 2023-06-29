@@ -4,10 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 
-const Icon = ({ postId }) => {
+const Icon = ({ postId, elected, setElected, setSelected, onElected, selected }) => {
 
-    const [elected, setElected] = useState(false);
-    const [selected, setSelected] = useState(false)
+
 
     const ref = useRef([])
 
@@ -19,14 +18,14 @@ const Icon = ({ postId }) => {
         setSelected(selected => !selected)
     }, [elected])
 
-    const onElected = (e) => {
-        setElected((elected) => {
-            return !elected
-        })
-        const value = e.currentTarget.dataset.id
-        e.currentTarget.dataset.elected = selected
-        localStorage.getItem(value) !== null ? localStorage.removeItem(value) : localStorage.setItem(value, selected);
-    }
+    // const onElected = (e) => {
+    //     setElected((elected) => {
+    //         return !elected
+    //     })
+    //     const value = e.currentTarget.dataset.id
+    //     e.currentTarget.dataset.elected = selected
+    //     localStorage.getItem(value) !== null ? localStorage.removeItem(value) : localStorage.setItem(value, selected);
+    // }
 
     return (
         <>

@@ -14,6 +14,8 @@ const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, se
 
     const [checked, setChecked] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
+    const [elected, setElected] = useState(false);
+    const [selected, setSelected] = useState(false)
 
     const [comment, setComment] = useState(0)
     const { comments, isLoadingComments } = useAppSelector((state) => state.commentsReducer);
@@ -45,9 +47,18 @@ const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, se
         setIsVisible(isVisible => !isVisible)
     }
 
+    const onElected = (e) => {
+        setElected((elected) => {
+            return !elected
+        })
+        const value = e.currentTarget.dataset.id
+        e.currentTarget.dataset.elected = selected
+        localStorage.getItem(value) !== null ? localStorage.removeItem(value) : localStorage.setItem(value, selected);
+    }
+
 
     return (
-        <Card key={postId} className='mt-3' style={{ background: 'grey' }}>
+        <Card key={postId} className='mt-3' style={elected ? { background: 'grey' } : { background: 'transparent' }}>
             <Card.Body>
                 <Card.Title><span contentEditable={contentEditable}>{postId}. {postTitle}</span></Card.Title>
                 <Card.Text><span contentEditable={contentEditable}>Text: {postBody}</span></Card.Text>
@@ -55,7 +66,7 @@ const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, se
                     <CustomToggle eventKey={postId} id={postId} setComment={setComment}>Comments</CustomToggle>
                     <Button variant="secondary" onClick={editable}>Edit</Button>
                     <Modal id={postId} onRemove={onRemove}></Modal>
-                    <Icon postId={postId} />
+                    <Icon postId={postId} elected={elected} setElected={setElected} setSelected={setSelected} selected={selected} onElected={onElected} />
                     <Form.Check data-id={postId} aria-label="option 1" className='mt-2' onClick={onChecked} />
                     {checked ? <><Button variant="secondary" setRemove={setRemove} data-id={postId} onClick={onVisibleRemove}>Remove</Button>
                         <Button variant="secondary" data-id={postId} onClick={onVisible}>Select</Button>
