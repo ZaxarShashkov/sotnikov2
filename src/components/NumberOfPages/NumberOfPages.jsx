@@ -4,7 +4,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 
 
-const NumberOfPages = ({ postsLocal, limit, pages, setPages, setCountPosts, setLimit, countPosts, handleClick2 }) => {
+const NumberOfPages = ({ postsLocal, limit, pages, setPages, setCountPosts, setLimit, countPosts, handleClickLimit }) => {
 
 
 
@@ -12,7 +12,7 @@ const NumberOfPages = ({ postsLocal, limit, pages, setPages, setCountPosts, setL
 
     const renderButtons = () => {
         const buttons = Array.from({ length: pages }, (x, i) => (
-            <Button key={i} data-id={(i) * limit} onClick={(e) => handleClick2(e)}>{i + 1}</Button>
+            <Button key={i} data-id={(i) * limit} onClick={(e) => handleClickLimit(e)}>{i + 1}</Button>
         ));
         return <>{buttons}</>;
     };

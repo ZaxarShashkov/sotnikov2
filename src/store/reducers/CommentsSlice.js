@@ -3,7 +3,7 @@ import { fetchComments } from './ActionCreators';
 
 const initialState = {
 	comments: [],
-	isLoading: false,
+	isLoadingComments: false,
 	error: '',
 };
 
@@ -13,15 +13,15 @@ export const commentsSlice = createSlice({
 	reducers: {},
 	extraReducers: {
 		[fetchComments.pending.type]: (state) => {
-			state.isLoading = true;
+			state.isLoadingComments = true;
 		},
 		[fetchComments.fulfilled.type]: (state, action) => {
-			state.isLoading = false;
+			state.isLoadingComments = false;
 			state.error = '';
 			state.comments = action.payload;
 		},
 		[fetchComments.rejected.type]: (state, action) => {
-			state.isLoading = false;
+			state.isLoadingComments = false;
 			state.error = action.payload;
 		},
 	},

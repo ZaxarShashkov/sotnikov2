@@ -1,34 +1,34 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { fetchPosts, fetchUsers, fetchComments } from '../store/reducers/ActionCreators';
-import Button from 'react-bootstrap/Button';
+
 import Card from 'react-bootstrap/Card';
 import { Container } from 'react-bootstrap';
 import CardGroup from 'react-bootstrap/CardGroup';
 import Accordion from 'react-bootstrap/Accordion';
 import ButtonGroup from '../components/ButtonGroup/ButtonGroup';
+import Button from 'react-bootstrap/Button';
 import CustomToggle from '../components/CustomToggle/CustomToggle';
 import Modal from '../components/Modal/Modal';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
 import Form from 'react-bootstrap/Form';
 import NumberOfPages from '../components/NumberOfPages/NumberOfPages';
-
-
-
+import Spinner from 'react-bootstrap/Spinner';
+import Icon from '../components/Icon/Icon';
+import MyCard from '../components/MyCard/MyCard';
 
 const PostsPage = () => {
 	const [limit, setLimit] = useState(100);
-	const [comment, setComment] = useState(0)
+
 	const [postsLocal, setPostsLocal] = useState([])
 	const [contentEditable, setContentEditable] = useState(false)
 	const [pages, setPages] = useState(1)
 	const [countPosts, setCountPosts] = useState(0)
 	const [filter, setFilter] = useState(null)
 
+	const { comments, isLoadingComments } = useAppSelector((state) => state.commentsReducer);
 	const { posts, isLoading, error } = useAppSelector((state) => state.postReducer);
 	const { users } = useAppSelector((state) => state.userReducer);
-	const { comments } = useAppSelector((state) => state.commentsReducer);
+
 	const dispatch = useAppDispatch();
 
 
@@ -39,16 +39,13 @@ const PostsPage = () => {
 		setFilter(Number(localStorage.getItem('filter')))
 	}, []);
 
-
 	useEffect(() => {
 		if (!isLoading) {
 			setPostsLocal(posts)
 		}
 	}, [isLoading])
 
-	useEffect(() => {
-		dispatch(fetchComments(comment));
-	}, [comment])
+
 
 	const handleClick = (e) => {
 		const value = e.target.value;
@@ -58,25 +55,16 @@ const PostsPage = () => {
 		localStorage.setItem('filter', value);
 	};
 
-	const onRemove = (e) => {
-		setPostsLocal(postsLocal.filter((post) => post.id !== +e.currentTarget.dataset.id))
-	}
-
-	const editable = () => {
-		setContentEditable(contentEditable => !contentEditable)
-	}
 
 	useEffect(() => {
 		const value = posts.length / Number(limit)
-		console.log(value, 'value')
 		setPages(value)
 	}, [posts, limit])
 
-	const handleClick2 = (e) => {
+	const handleClickLimit = (e) => {
 		const value = e.currentTarget.dataset.id
 		setCountPosts(e.currentTarget.dataset.id)
 		setFilter(+ limit * Number((+value + +limit) / limit))
-
 	}
 
 	const renderContent = () => {
@@ -89,26 +77,14 @@ const PostsPage = () => {
 						const postComments = comments.filter((comment) => comment.postId === post.id)
 						return (
 							<Accordion defaultActiveKey="0" key={post.id}>
-								<Card key={post.id} className='mt-3'>
-									<Card.Body>
-										<Card.Title><span contentEditable={contentEditable}>{post.id}. {post.title}</span></Card.Title>
-										<Card.Text><span contentEditable={contentEditable}>Text: {post.body}</span></Card.Text>
-										<div style={{ display: 'flex', gap: '1rem' }}>
-											<CustomToggle eventKey={post.id} id={post.id} setComment={setComment}>Comments</CustomToggle>
-											<Button variant="secondary" onClick={editable}>Edit</Button>
-											<Modal id={post.id} onRemove={onRemove}></Modal>
-											<Button variant="secondary" data-id={post.id} >
-												<FontAwesomeIcon icon={faStar} style={{ color: "#ffffff" }} />
-											</Button>
-											<Form.Check aria-label="option 1" className='mt-2' />
-										</div>
-									</Card.Body>
-									{postComments.map((comment) => (
-										<Accordion.Collapse eventKey={post.id} key={comment.id}>
-											<Card.Body>Name: {comment.name}<br />Email: {comment.email}<br />Text: {comment.body}</Card.Body>
-										</Accordion.Collapse>
-									))}
-								</Card>
+								<MyCard postId={post.id}
+									postTitle={post.title}
+									postComments={postComments}
+									postBody={post.body}
+									setContentEditable={setContentEditable}
+									contentEditable={contentEditable}
+									postsLocal={postsLocal}
+									setPostsLocal={setPostsLocal} />
 							</Accordion>
 						)
 
@@ -126,10 +102,14 @@ const PostsPage = () => {
 		<Container>
 			<h2 style={{ textAlign: 'center' }}>Number of posts</h2>
 			<ButtonGroup handleClick={handleClick} />
-			<NumberOfPages postsLocal={postsLocal} limit={limit} pages={pages} setPages={setPages} countPosts={countPosts} setCountPosts={setCountPosts} setLimit={setLimit} handleClick2={handleClick2} />
+			<NumberOfPages postsLocal={postsLocal} limit={limit} pages={pages} setPages={setPages} countPosts={countPosts} setCountPosts={setCountPosts} setLimit={setLimit} handleClickLimit={handleClickLimit} />
 			<CardGroup >
+				{isLoadingComments || isLoading ? <Spinner animation="border" role="status" style={{ position: 'fixed', top: '50%', left: '50%' }}>
+					<span className="visually-hidden">Loading...</span>
+				</Spinner> : null}
 				<>
 					{content}
+
 				</>
 
 			</CardGroup>
