@@ -80,14 +80,22 @@ const PostsPage = () => {
 		}
 	}
 
-	const sortByIdDown = (postsLocal) => {
+	const sortByIdDown = () => {
 		setUsersLocal([...usersLocal].sort((a, b) => b.id - a.id))
 		setPostsLocal([...postsLocal].sort((a, b) => b.id - a.id))
 	}
 
-	const sortByIdUp = (postsLocal) => {
+	const sortByIdUp = () => {
 		setUsersLocal([...usersLocal].sort((a, b) => a.id - b.id))
 		setPostsLocal([...postsLocal].sort((a, b) => a.id - b.id))
+	}
+
+	const sortByUserNameDown = () => {
+		setUsersLocal([...usersLocal].sort((a, b) => b.name.localeCompare(a.name)))
+	}
+
+	const sortByUserNameUp = () => {
+		setUsersLocal([...usersLocal].sort((a, b) => a.name.localeCompare(b.name)))
 	}
 
 
@@ -96,7 +104,7 @@ const PostsPage = () => {
 			<h2 style={{ textAlign: 'center' }}>Number of posts</h2>
 			<ButtonGroup handleClick={handleClick} />
 			<NumberOfPages postsLocal={postsLocal} limit={limit} pages={pages} setPages={setPages} countPosts={countPosts} setCountPosts={setCountPosts} setLimit={setLimit} handleClickLimit={handleClickLimit} />
-			<MyDropDown className='mt-3' sortByIdDown={sortByIdDown} sortByIdUp={sortByIdUp} postsLocal={postsLocal}></MyDropDown>
+			<MyDropDown className='mt-3' sortByIdDown={sortByIdDown} sortByIdUp={sortByIdUp} postsLocal={postsLocal} sortByUserNameDown={sortByUserNameDown} sortByUserNameUp={sortByUserNameUp}></MyDropDown>
 			<CardGroup >
 				{isLoadingComments || isLoading ? <Spinner animation="border" role="status" style={{ position: 'fixed', top: '50%', left: '50%' }}>
 					<span className="visually-hidden">Loading...</span>
