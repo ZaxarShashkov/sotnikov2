@@ -25,14 +25,7 @@ const PostsPage = () => {
 	const [countPosts, setCountPosts] = useState(0)
 	const [filter, setFilter] = useState(null)
 	const [id, setId] = useState([])
-
-
-	const removeGroup = () => {
-		const filter = postsLocal.filter((post) =>
-			id.every((id) => post.id !== +id))
-		return setPostsLocal(filter)
-	}
-
+	const [remove, setRemove] = useState(false)
 
 	const { comments, isLoadingComments } = useAppSelector((state) => state.commentsReducer);
 	const { posts, isLoading, error } = useAppSelector((state) => state.postReducer);
@@ -74,6 +67,18 @@ const PostsPage = () => {
 		setFilter(+ limit * Number((+value + +limit) / limit))
 	}
 
+	const removeGroup = () => {
+		const filter = postsLocal.filter((post) =>
+			id.every((id) => post.id !== +id))
+		if (remove) {
+			setRemove(false)
+			return setPostsLocal(filter)
+		} else {
+			return null
+		}
+	}
+
+
 	const renderContent = () => {
 		const content = postsLocal ? users.slice(Number(countPosts) / 10, Number(filter) / 10).map((user) => {
 			const userPosts = postsLocal.slice(Number(countPosts), Number(filter)).filter((post) => post.userId === user.id);
@@ -95,7 +100,8 @@ const PostsPage = () => {
 									setPostsLocal={setPostsLocal}
 									id={id}
 									setId={setId}
-									removeGroup={removeGroup} />
+									removeGroup={removeGroup}
+									setRemove={setRemove} />
 							</Accordion>
 						)
 

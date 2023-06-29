@@ -23,8 +23,6 @@ const Icon = ({ postId }) => {
         setElected((elected) => {
             return !elected
         })
-        console.log(selected)
-        console.log(elected)
         const value = e.currentTarget.dataset.id
         e.currentTarget.dataset.elected = selected
         localStorage.getItem(value) !== null ? localStorage.removeItem(value) : localStorage.setItem(value, selected);

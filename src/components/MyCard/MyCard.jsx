@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchPosts, fetchUsers, fetchComments } from '../../store/reducers/ActionCreators';
 import CustomModal from '../Modal/CustomModal';
 
-const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, setContentEditable, setPostsLocal, postsLocal, checkDataId, removeGroup, id, setId }) => {
+const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, setContentEditable, setPostsLocal, postsLocal, setRemove, removeGroup, id, setId }) => {
 
     const [checked, setChecked] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
@@ -36,6 +36,11 @@ const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, se
         setId([...id, e.currentTarget.dataset.id])
     }
 
+    const onVisibleRemove = () => {
+        setIsVisible(isVisible => !isVisible)
+        setRemove(true)
+    }
+
     const onVisible = () => {
         setIsVisible(isVisible => !isVisible)
     }
@@ -52,8 +57,8 @@ const MyCard = ({ postId, postTitle, postBody, postComments, contentEditable, se
                     <Modal id={postId} onRemove={onRemove}></Modal>
                     <Icon postId={postId} />
                     <Form.Check data-id={postId} aria-label="option 1" className='mt-2' onClick={onChecked} />
-                    {checked ? <><Button variant="secondary" data-id={postId} onClick={onVisible}>Remove</Button>
-                        <Button variant="secondary" data-id={postId} onClick={(e) => { onVisible(); checkDataId(e) }}>Select</Button>
+                    {checked ? <><Button variant="secondary" setRemove={setRemove} data-id={postId} onClick={onVisibleRemove}>Remove</Button>
+                        <Button variant="secondary" data-id={postId} onClick={onVisible}>Select</Button>
                     </> : null}
                     {isVisible ? <CustomModal removeGroup={removeGroup} onVisible={onVisible}></CustomModal> : null}
                 </div>

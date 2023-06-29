@@ -2,7 +2,7 @@ import React from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-const CustomModal = ({ onVisible, removeGroup }) => {
+const CustomModal = ({ onVisible, removeGroup, setRemove }) => {
 
 
     return (
@@ -21,7 +21,7 @@ const CustomModal = ({ onVisible, removeGroup }) => {
 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => onVisible()}>Close</Button>
-                    <Button variant="primary" onClick={removeGroup} >Remove</Button>
+                    <Button variant="primary" onClick={removeGroup} >Accept</Button>
                 </Modal.Footer>
             </Modal.Dialog>
         </div>
