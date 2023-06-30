@@ -6,7 +6,7 @@ import img from '../img/welcome.jpg'
 const WelcomePage = () => {
     return (
         <Container style={{ overflow: 'hidden', height: '100vh' }}>
-            <Card.Img src={img} alt="Card image" style={{ marginTop: '-6rem', overflow: 'hidden' }} />
+            <Card.Img src={img} alt="Card image" style={{ marginTop: '-2rem', overflow: 'hidden' }} />
         </Container >
     )
 }
