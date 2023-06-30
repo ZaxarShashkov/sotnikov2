@@ -1,19 +1,14 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { fetchPosts, fetchUsers, fetchComments } from '../store/reducers/ActionCreators';
+import { fetchPosts, fetchUsers } from '../store/reducers/ActionCreators';
 
 import Card from 'react-bootstrap/Card';
 import { Container } from 'react-bootstrap';
 import CardGroup from 'react-bootstrap/CardGroup';
 import Accordion from 'react-bootstrap/Accordion';
 import ButtonGroup from '../components/ButtonGroup/ButtonGroup';
-import Button from 'react-bootstrap/Button';
-import CustomToggle from '../components/CustomToggle/CustomToggle';
-import Modal from '../components/Modal/Modal';
-import Form from 'react-bootstrap/Form';
 import NumberOfPages from '../components/NumberOfPages/NumberOfPages';
-import Spinner from 'react-bootstrap/Spinner';
-import Icon from '../components/Icon/Icon';
+import MySpinner from '../components/MySpinner/MySpinner';
 import MyCard from '../components/MyCard/MyCard';
 import MyDropDown from '../components/MyDropDown/MyDropDown';
 import NewUserForm from '../components/NewUserForm/NewUserForm';
@@ -110,9 +105,7 @@ const PostsPage = () => {
 			<MyDropDown className='mt-3' sortByIdDown={sortByIdDown} sortByIdUp={sortByIdUp} postsLocal={postsLocal} sortByUserNameDown={sortByUserNameDown} sortByUserNameUp={sortByUserNameUp}></MyDropDown>
 			<NewUserForm usersLocal={usersLocal} setUsersLocal={setUsersLocal} postsLocal={postsLocal} setPostsLocal={setPostsLocal} />
 			<CardGroup >
-				{isLoadingComments || isLoading ? <Spinner animation="border" role="status" style={{ position: 'fixed', top: '50%', left: '50%' }}>
-					<span className="visually-hidden">Loading...</span>
-				</Spinner> : null}
+				{isLoadingComments || isLoading ? <MySpinner /> : null}
 				<>
 					{postsLocal ? usersLocal.slice(Number(countPosts) / 10, Number(filter) / 10).map((user) => {
 						const userPosts = postsLocal.slice(Number(countPosts), Number(filter)).filter((post) => post.userId === user.id);
