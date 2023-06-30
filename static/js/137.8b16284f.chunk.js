@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunksotnikov=self.webpackChunksotnikov||[]).push([[137],{2137:function(n,s,e){e.r(s);e(2791);var t=e(184);s.default=function(){return(0,t.jsx)("div",{children:"PhotosPages"})}}}]);
+//# sourceMappingURL=137.8b16284f.chunk.js.map
