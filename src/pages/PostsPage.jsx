@@ -34,6 +34,7 @@ const PostsPage = () => {
 	useEffect(() => {
 		dispatch(fetchPosts());
 		dispatch(fetchUsers());
+		setUsersLocal(users)
 		setLimit(Number(localStorage.getItem('limit')));
 		setFilter(Number(localStorage.getItem('filter')))
 	}, []);
@@ -43,7 +44,7 @@ const PostsPage = () => {
 	useEffect(() => {
 		if (!isLoading) {
 			setPostsLocal(posts)
-			setUsersLocal(users)
+			// setUsersLocal(users)
 		}
 	}, [isLoading])
 
