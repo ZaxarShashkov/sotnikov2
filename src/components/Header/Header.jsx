@@ -9,7 +9,7 @@ const Header = () => {
 		<>
 			<Navbar expand='lg' className='bg-body-tertiary'>
 				<Container>
-					<NavLink to='/' style={{ textDecoration: 'none' }}>
+					<NavLink to='/sotnikov2' style={{ textDecoration: 'none' }}>
 						<Navbar.Brand as='div' >
 							SOTNIKOV
 						</Navbar.Brand>

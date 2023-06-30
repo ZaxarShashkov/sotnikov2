@@ -15,7 +15,7 @@ function App() {
 				<Header />
 				<Suspense fallback={<MySpinner />}>
 					<Routes>
-						<Route path={'/'} element={<WelcomePage />} />
+						<Route path={'/sotnikov2'} element={<WelcomePage />} />
 						<Route path={'/posts'} element={<PostsPage />} />
 						<Route path={'/photos'} element={<PhotosPages />} />
 					</Routes>
