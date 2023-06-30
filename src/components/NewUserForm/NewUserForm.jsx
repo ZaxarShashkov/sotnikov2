@@ -3,24 +3,24 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import uuid from 'react-uuid';
+
 
 const NewUserForm = ({ usersLocal, setUsersLocal, postsLocal, setPostsLocal }) => {
+
     const [show, setShow] = useState(false);
     const [userName, setUserName] = useState('')
     const [post, setPost] = useState({ postTitle: '', postText: '' })
 
-
-
     const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false)
 
-    const handleClose = () => {
+    const handleSave = () => {
         const { postTitle, postText } = post;
         setShow(false)
-        setUsersLocal([...usersLocal, { id: 11, name: userName, email: `${userName}@gmail.com` }])
-        setPostsLocal([...postsLocal, { userId: 11, id: 101, title: postTitle, body: postText }])
-
+        setUsersLocal([...usersLocal, { id: usersLocal.length + 1, name: userName, email: `${userName}@gmail.com` }])
+        setPostsLocal([...postsLocal, { userId: usersLocal.length + 1, id: postsLocal.length + 1, title: postTitle, body: postText }])
+        setUserName(null)
+        setPost({ postTitle: null, postText: null })
     };
 
     const onChangeUserName = (e) => {
@@ -71,7 +71,7 @@ const NewUserForm = ({ usersLocal, setUsersLocal, postsLocal, setPostsLocal }) =
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
+                    <Button variant="primary" onClick={handleSave}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
