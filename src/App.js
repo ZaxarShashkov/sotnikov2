@@ -17,11 +17,10 @@ function App() {
 	const dispatch = useAppDispatch();
 
 	const { posts, isLoading, error } = useAppSelector((state) => state.postReducer);
+
 	useEffect(() => {
 		dispatch(fetchPosts());
 	}, []);
-
-	console.log(posts);
 
 	useEffect(() => {
 		setPostsLocal(posts);
