@@ -13,10 +13,8 @@ import MyCard from '../components/MyCard/MyCard';
 import MyDropDown from '../components/MyDropDown/MyDropDown';
 import NewUserForm from '../components/NewUserForm/NewUserForm';
 
-const PostsPage = () => {
+const PostsPage = ({ postsLocal, setPostsLocal, isLoading, posts }) => {
 	const [limit, setLimit] = useState(100);
-
-	const [postsLocal, setPostsLocal] = useState([])
 	const [usersLocal, setUsersLocal] = useState([])
 	const [contentEditable, setContentEditable] = useState(false)
 	const [pages, setPages] = useState(1)
@@ -26,24 +24,21 @@ const PostsPage = () => {
 	const [remove, setRemove] = useState(false)
 
 	const { comments, isLoadingComments } = useAppSelector((state) => state.commentsReducer);
-	const { posts, isLoading, error } = useAppSelector((state) => state.postReducer);
 	const { users } = useAppSelector((state) => state.userReducer);
 
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(fetchPosts());
 		dispatch(fetchUsers());
-		setPostsLocal(posts)
 		setLimit(Number(localStorage.getItem('limit')));
 		setFilter(Number(localStorage.getItem('filter')))
 	}, []);
 
 
 
+
 	useEffect(() => {
 		if (!isLoading) {
-
 			setUsersLocal(users)
 		}
 	}, [isLoading])
