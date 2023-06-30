@@ -9,7 +9,7 @@ const Header = () => {
 		<>
 			<Navbar expand='lg' className='bg-body-tertiary'>
 				<Container>
-					<NavLink to='/'>
+					<NavLink to='/' style={{ textDecoration: 'none' }}>
 						<Navbar.Brand as='div' >
 							SOTNIKOV
 						</Navbar.Brand>
@@ -17,10 +17,10 @@ const Header = () => {
 					<Navbar.Toggle aria-controls='basic-navbar-nav' />
 					<Navbar.Collapse id='basic-navbar-nav'>
 						<Nav className='me-auto'>
-							<NavLink to="/posts" end>
+							<NavLink to="/posts" end style={{ textDecoration: 'none' }}>
 								<Nav.Link as={'li'} >Posts</Nav.Link>
 							</NavLink>
-							<NavLink to="/photos" end>
+							<NavLink to="/photos" end style={{ textDecoration: 'none' }}>
 								<Nav.Link as={'li'} >Photos</Nav.Link>
 							</NavLink>
 
@@ -28,7 +28,7 @@ const Header = () => {
 						</Nav>
 					</Navbar.Collapse>
 				</Container>
-			</Navbar>
+			</Navbar >
 		</>
 	);
 };
