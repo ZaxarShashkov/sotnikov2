@@ -108,7 +108,7 @@ const PostsPage = () => {
 			<CardGroup >
 				{isLoadingComments || isLoading ? <MySpinner /> : null}
 				<>
-					{postsLocal ? usersLocal.slice(Number(countPosts) / 10, Number(filter) / 10).map((user) => {
+					{posts ? usersLocal.slice(Number(countPosts) / 10, Number(filter) / 10).map((user) => {
 						const userPosts = postsLocal.slice(Number(countPosts), Number(filter)).filter((post) => post.userId === user.id);
 						return (
 							<div key={user.id}>
